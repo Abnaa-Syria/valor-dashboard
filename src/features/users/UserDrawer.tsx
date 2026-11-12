@@ -54,9 +54,19 @@ function Overview({ user, canChangeStatus }: { user: UserDetails; canChangeStatu
         <Descriptions.Item label="Friends invited">{formatNumber(user._count.referralsMade)}</Descriptions.Item>
         <Descriptions.Item label="Gifts received">{formatNumber(user._count.giftsReceived)}</Descriptions.Item>
         <Descriptions.Item label="Gifts sent">{formatNumber(user._count.giftsSent)}</Descriptions.Item>
+        <Descriptions.Item label="Blocked by">{formatNumber(user._count.blockedBy)} players</Descriptions.Item>
       </Descriptions>
 
-      {canChangeStatus && (
+      {user.status === 'DELETED' && (
+        <Alert
+          type="info"
+          showIcon
+          message={`The player deleted this account on ${formatDateTime(user.deletedAt)}`}
+          description="Personal data was erased. Purchases, the credit ledger and battle results are kept without personal data."
+        />
+      )}
+
+      {canChangeStatus && user.status !== 'DELETED' && (
         <Flex gap={8} wrap>
           {statusActions
             .filter((action) => action.status !== user.status)

@@ -1,12 +1,13 @@
 import { get, patch, post } from '../../lib/api';
 import type { Paginated } from '../../lib/types';
 
-export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'BANNED';
+export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'BANNED' | 'DELETED';
 
 export const statusMeta: Record<UserStatus, { label: string; color: string }> = {
   ACTIVE: { label: 'Active', color: 'green' },
   SUSPENDED: { label: 'Suspended', color: 'orange' },
   BANNED: { label: 'Banned', color: 'red' },
+  DELETED: { label: 'Deleted by player', color: 'default' },
 };
 
 export type UserListItem = {
@@ -25,7 +26,8 @@ export type UserDetails = UserListItem & {
   updatedAt: string;
   balances: { type: 'VOTING' | 'CHALLENGE'; freeBalance: number; purchasedBalance: number }[];
   invitedVia: { inviter: { id: string; username: string }; createdAt: string } | null;
-  _count: { clips: number; votes: number; referralsMade: number; giftsReceived: number; giftsSent: number };
+  deletedAt: string | null;
+  _count: { clips: number; votes: number; referralsMade: number; giftsReceived: number; giftsSent: number; blockedBy: number };
   battles: { total: number; won: number; lost: number; draws: number; winRate: number; votesReceived: number };
   badges: { earnedAt: string; awardedById: string | null; badge: { id: string; name: string; slug: string } }[];
 };
