@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Breadcrumb, Button, Flex, Typography } from 'antd';
+import { Breadcrumb, Flex } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 type Crumb = { label: string; to?: string };
@@ -19,21 +19,23 @@ type Props = {
 export function PageHeader({ title, subtitle, crumbs, actions, backTo }: Props) {
   const navigate = useNavigate();
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div className="v-page-head">
       {crumbs && crumbs.length > 0 && (
         <Breadcrumb
-          style={{ marginBottom: 8 }}
+          style={{ marginBottom: 12, fontSize: 13 }}
           items={crumbs.map((crumb) => ({ title: crumb.to ? <Link to={crumb.to}>{crumb.label}</Link> : crumb.label }))}
         />
       )}
-      <Flex justify="space-between" align="flex-start" gap={16} wrap>
-        <Flex align="center" gap={12}>
-          {backTo && <Button type="text" icon={<ArrowLeftOutlined />} onClick={() => navigate(backTo)} aria-label="Back" />}
-          <div>
-            <Typography.Title level={3} style={{ margin: 0 }}>
-              {title}
-            </Typography.Title>
-            {subtitle && <Typography.Text type="secondary">{subtitle}</Typography.Text>}
+      <Flex justify="space-between" align="flex-end" gap={16} wrap>
+        <Flex align="center" gap={14} style={{ minWidth: 0 }}>
+          {backTo && (
+            <button type="button" className="v-back" onClick={() => navigate(backTo)} aria-label="Back">
+              <ArrowLeftOutlined />
+            </button>
+          )}
+          <div style={{ minWidth: 0 }}>
+            <h1 className="v-page-title">{title}</h1>
+            {subtitle && <div className="v-page-sub">{subtitle}</div>}
           </div>
         </Flex>
         {actions && (

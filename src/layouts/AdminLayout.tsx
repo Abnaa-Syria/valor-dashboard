@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Badge, Button, Dropdown, Flex, Layout, Menu, Tag, type MenuProps } from 'antd';
+import { Badge, Dropdown, Flex, Layout, Menu, type MenuProps } from 'antd';
 import {
   AppstoreOutlined,
+  BellOutlined,
   BgColorsOutlined,
   BorderOutlined,
   CommentOutlined,
@@ -98,7 +99,7 @@ export function AdminLayout() {
     allItems
       .filter((item) => item.key !== '/' && (pathname === item.key || pathname.startsWith(`${item.key}/`)))
       .sort((a, b) => b.key.length - a.key.length)[0]?.key ?? '/';
-  const { data: stats } = useQuery({ queryKey: ['stats', 'overview'], queryFn: () => get<{ reports: { open: number } }>('/admin/stats/overview'), refetchInterval: 60_000 });
+  const { data: stats } = useQuery({ queryKey: ['stats', 'overview'], queryFn: () => get<{ reports: { open: number }; battles: { active: number } }>('/admin/stats/overview'), refetchInterval: 60_000 });
   const openReports = stats?.reports.open ?? 0;
 
   const menuItems: MenuProps['items'] = visibleGroups.map((group) => ({
@@ -123,34 +124,66 @@ export function AdminLayout() {
     { key: 'logout', icon: <LogoutOutlined />, label: 'Log out', danger: true, onClick: logout },
   ];
 
+  const current = allItems.find((item) => item.key === selectedKey);
+  const currentGroup = visibleGroups.find((group) => group.items.some((item) => item.key === selectedKey));
+  const initials = (admin?.name ?? 'A').split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase();
+
   return (
     <Layout style={{ minHeight: '100%' }}>
-      <Layout.Sider breakpoint="lg" collapsible trigger={null} collapsed={collapsed} onCollapse={setCollapsed} width={232} style={{ overflowY: 'auto', height: '100vh', position: 'sticky', top: 0 }}>
-        <Flex align="center" justify="center" style={{ height: 64 }}>
-          <span className="brand" style={{ fontSize: collapsed ? 18 : 24 }}>
-            {collapsed ? 'V' : 'VALOR'}
-          </span>
-        </Flex>
-        <Menu theme="dark" mode="inline" style={{ paddingBottom: 16 }} selectedKeys={[selectedKey]} items={menuItems} onClick={({ key }) => navigate(key)} />
+      <Layout.Sider className="v-sider" breakpoint="lg" collapsible trigger={null} collapsed={collapsed} onCollapse={setCollapsed} width={248} collapsedWidth={72} style={{ height: '100vh', position: 'sticky', top: 0 }}>
+        <Link to="/" className="v-brand" aria-label="VALOR overview">
+          {collapsed ? <img src="/brand/valor-emblem.png" alt="VALOR" width={44} height={44} /> : <img src="/brand/valor-logo.png" alt="VALOR" style={{ height: 40, width: 'auto' }} />}
+        </Link>
+        <nav className="v-nav">
+          <Menu theme="dark" mode="inline" selectedKeys={[selectedKey]} items={menuItems} onClick={({ key }) => navigate(key)} />
+        </nav>
+        {!collapsed && (
+          <div className="v-sider-foot">
+            <div className="v-eyebrow" style={{ fontSize: 10 }}>Admin console</div>
+            <div style={{ marginTop: 4 }}>Blind 1v1 battles · v1</div>
+          </div>
+        )}
       </Layout.Sider>
 
       <Layout>
-        <Layout.Header style={{ paddingInline: 24 }}>
-          <Flex align="center" justify="space-between" style={{ height: '100%' }}>
-            <Button type="text" aria-label={collapsed ? 'Expand menu' : 'Collapse menu'} icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} onClick={() => setCollapsed(!collapsed)} />
-            <Dropdown menu={{ items: accountMenu }} trigger={['click']}>
-              <Button type="text">
-                <Flex align="center" gap={8}>
-                  {admin?.name}
-                  {admin && <Tag color="purple" style={{ margin: 0 }}>{roleLabels[admin.role]}</Tag>}
-                  <DownOutlined style={{ fontSize: 10 }} />
-                </Flex>
-              </Button>
-            </Dropdown>
+        <Layout.Header className="v-header">
+          <Flex align="center" justify="space-between" gap={16} style={{ height: '100%' }}>
+            <Flex align="center" gap={14} style={{ minWidth: 0 }}>
+              <button type="button" className="v-icon-btn" aria-label={collapsed ? 'Expand menu' : 'Collapse menu'} onClick={() => setCollapsed(!collapsed)}>
+                {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              </button>
+              <div className="v-header-title" style={{ lineHeight: 1.25, minWidth: 0 }}>
+                <div className="v-eyebrow" style={{ fontSize: 10 }}>{currentGroup?.label ?? 'Community'}</div>
+                <div style={{ fontFamily: 'var(--v-display)', fontWeight: 600, fontSize: 15, color: '#fff' }}>{current?.label ?? 'Overview'}</div>
+              </div>
+            </Flex>
+            <Flex align="center" gap={10}>
+              {stats && (
+                <Link to="/battles?status=ACTIVE" className="v-live" title="Battles open for voting right now">
+                  <i />
+                  {stats.battles.active} live {stats.battles.active === 1 ? 'battle' : 'battles'}
+                </Link>
+              )}
+              <Link to="/reports" className="v-icon-btn" aria-label={`Open reports: ${openReports}`} title="Open reports">
+                <Badge count={openReports} size="small" offset={[4, -4]}>
+                  <BellOutlined style={{ fontSize: 16, color: 'inherit' }} />
+                </Badge>
+              </Link>
+              <Dropdown menu={{ items: accountMenu }} trigger={['click']} placement="bottomRight">
+                <div className="v-account" role="button" tabIndex={0}>
+                  <div className="v-avatar-ring"><div>{initials}</div></div>
+                  <div style={{ lineHeight: 1.2 }} className="v-account-text">
+                    <div style={{ fontWeight: 600, fontSize: 13, color: '#fff' }}>{admin?.name}</div>
+                    {admin && <div style={{ fontSize: 11, color: 'var(--v-violet)' }}>{roleLabels[admin.role]}</div>}
+                  </div>
+                  <DownOutlined style={{ fontSize: 10, color: 'var(--v-muted)' }} />
+                </div>
+              </Dropdown>
+            </Flex>
           </Flex>
         </Layout.Header>
 
-        <Layout.Content style={{ padding: 24 }}>
+        <Layout.Content className="v-content">
           <Outlet />
         </Layout.Content>
       </Layout>

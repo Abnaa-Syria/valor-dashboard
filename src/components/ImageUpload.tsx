@@ -14,7 +14,7 @@ type Props = {
 
 /** Checkerboard so transparent artwork (frame rings) is visible on any background. */
 export const checkerboard = {
-  backgroundColor: '#1b1729',
+  backgroundColor: '#1c1829',
   backgroundImage:
     'linear-gradient(45deg, #262138 25%, transparent 25%), linear-gradient(-45deg, #262138 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #262138 75%), linear-gradient(-45deg, transparent 75%, #262138 75%)',
   backgroundSize: '16px 16px',
