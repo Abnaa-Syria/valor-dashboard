@@ -40,8 +40,8 @@ export async function patch<T>(url: string, body?: unknown): Promise<T> {
   return response.data.data;
 }
 
-export async function del<T>(url: string): Promise<T> {
-  const response = await api.delete<{ data: T }>(url);
+export async function del<T>(url: string, body?: unknown): Promise<T> {
+  const response = await api.delete<{ data: T }>(url, { data: body });
   return response.data.data;
 }
 

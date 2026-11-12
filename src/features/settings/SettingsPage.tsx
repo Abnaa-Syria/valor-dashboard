@@ -1,8 +1,9 @@
 import { useEffect, type ReactNode } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Alert, App, Button, Card, Form, Input, InputNumber, Result, Select, Skeleton, Tag, Typography } from 'antd';
+import { Alert, App, Button, Card, Form, Input, InputNumber, Result, Select, Skeleton, Tag } from 'antd';
 import { get, getErrorMessage, patch } from '../../lib/api';
 import { useCurrentAdmin } from '../auth/api';
+import { PageHeader } from '../../components/PageHeader';
 
 type SettingsValues = {
   votingDurationHours: number;
@@ -89,9 +90,7 @@ export function SettingsPage() {
 
   return (
     <>
-      <Typography.Title level={3} style={{ marginTop: 0 }}>
-        App settings
-      </Typography.Title>
+      <PageHeader title="App settings" subtitle="Rules the app follows: voting time, daily free credits, matchmaking and rematches." />
 
       <Alert
         type="info"

@@ -1,31 +1,24 @@
 import { get, post } from '../../lib/api';
 import type { Paginated } from '../../lib/types';
 
-export type BattleStatus = 'ACTIVE' | 'CLOSED' | 'CANCELLED';
-export type BattleSide = 'A' | 'B';
-
-export const battleStatusMeta: Record<BattleStatus, { label: string; color: string }> = {
-  ACTIVE: { label: 'Voting live', color: 'purple' },
-  CLOSED: { label: 'Completed', color: 'green' },
-  CANCELLED: { label: 'Cancelled', color: 'default' },
-};
+type PlayerSummary = { id: string; username: string; avatarUrl: string | null };
 
 export type BattleClip = {
   clipId: string;
   title: string;
   videoUrl: string | null;
   thumbnailUrl: string | null;
-  player: { id: string; username: string; avatarUrl: string | null };
+  player: PlayerSummary;
 };
 
 export type Battle = {
   id: string;
-  status: BattleStatus;
+  status: string;
   game: { id: string; slug: string; name: string };
   votingStartsAt: string;
   votingEndsAt: string;
   closedAt: string | null;
-  winnerSide: BattleSide | null;
+  winnerSide: 'A' | 'B' | null;
   votesA: number;
   votesB: number;
   totalVotes: number;
@@ -35,17 +28,58 @@ export type Battle = {
   clipB: BattleClip;
 };
 
-export type ListBattlesParams = { page: number; pageSize: number; gameId?: string; status?: BattleStatus };
-
-export const battlesKeys = {
-  all: ['battles'] as const,
-  list: (params: ListBattlesParams) => ['battles', 'list', params] as const,
+export type BattleDetail = Battle & {
+  votes: { side: 'A' | 'B'; createdAt: string; user: { id: string; username: string } }[];
+  gifts: {
+    id: string;
+    battleSide: 'A' | 'B' | null;
+    quantity: number;
+    popularityAwarded: number;
+    awardedAt: string | null;
+    createdAt: string;
+    gift: { name: string };
+    sender: { id: string; username: string };
+  }[];
+  tickets: { id: string; weaponClass: string; rank: string; createdAt: string; matchedAt: string | null; user: { username: string } }[];
+  rematch: { id: string; status: string; battleId: string | null } | null;
+  rematchOf: { id: string; originalBattleId: string } | null;
 };
 
-export function listBattles(params: ListBattlesParams) {
-  return get<Paginated<Battle>>('/admin/battles', params);
-}
+export type Entry = {
+  id: string;
+  status: string;
+  weaponClass: string;
+  rank: string;
+  battleId: string | null;
+  createdAt: string;
+  matchedAt: string | null;
+  expiresAt: string | null;
+  user: { id: string; username: string };
+  game: { id: string; name: string };
+  clip: { id: string; title: string; thumbnailUrl: string | null };
+};
 
-export function cancelBattle(id: string, reason: string) {
-  return post<Battle>(`/admin/battles/${id}/cancel`, { reason });
-}
+export type Rematch = {
+  id: string;
+  status: string;
+  originalBattleId: string;
+  battleId: string | null;
+  expiresAt: string;
+  respondedAt: string | null;
+  createdAt: string;
+  challenger: { id: string; username: string };
+  opponent: { id: string; username: string };
+  originalBattle: { game: { name: string } };
+};
+
+export const battlesApi = {
+  list: (params: object) => get<Paginated<Battle>>('/admin/battles', params),
+  get: (id: string) => get<BattleDetail>(`/admin/battles/${id}`),
+  cancel: (id: string, reason: string) => post<BattleDetail>(`/admin/battles/${id}/cancel`, { reason }),
+  close: (id: string) => post<BattleDetail>(`/admin/battles/${id}/close`),
+  extend: (id: string, hours: number) => post<BattleDetail>(`/admin/battles/${id}/extend`, { hours }),
+  entries: (params: object) => get<Paginated<Entry>>('/admin/entries', params),
+  cancelEntry: (id: string, reason: string) => post(`/admin/entries/${id}/cancel`, { reason }),
+  rematches: (params: object) => get<Paginated<Rematch>>('/admin/rematches', params),
+  cancelRematch: (id: string, reason: string) => post(`/admin/rematches/${id}/cancel`, { reason }),
+};

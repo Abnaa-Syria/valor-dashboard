@@ -1,42 +1,58 @@
-import { get, post } from '../../lib/api';
+import { get, patch, post } from '../../lib/api';
 import type { Paginated } from '../../lib/types';
 
-export type ClipStatus = 'PROCESSING' | 'READY' | 'FAILED' | 'REMOVED';
-
-export const clipStatusMeta: Record<ClipStatus, { label: string; color: string }> = {
-  PROCESSING: { label: 'Processing', color: 'blue' },
-  READY: { label: 'Published', color: 'green' },
-  FAILED: { label: 'Failed', color: 'red' },
-  REMOVED: { label: 'Removed', color: 'default' },
-};
+type PlayerSummary = { id: string; username: string; avatarUrl: string | null };
 
 export type Clip = {
   id: string;
   title: string;
   description: string | null;
   durationSec: number | null;
-  status: ClipStatus;
+  status: string;
   videoUrl: string | null;
   thumbnailUrl: string | null;
   likesCount: number;
   commentsCount: number;
   createdAt: string;
   game: { id: string; slug: string; name: string };
-  owner: { id: string; username: string; avatarUrl: string | null };
+  owner: PlayerSummary;
   live: { waitingForOpponent: boolean; battleId: string | null };
 };
 
-export type ListClipsParams = { page: number; pageSize: number; q?: string; gameId?: string; status?: ClipStatus };
-
-export const clipsKeys = {
-  all: ['clips'] as const,
-  list: (params: ListClipsParams) => ['clips', 'list', params] as const,
+export type ClipDetail = Clip & {
+  removedAt: string | null;
+  updatedAt: string;
+  reportsCount: number;
+  likes: { createdAt: string; user: { id: string; username: string } }[];
+  battles: {
+    id: string;
+    status: string;
+    side: 'A' | 'B';
+    opponent: string;
+    result: 'WON' | 'LOST' | 'DRAW' | null;
+    votesFor: number;
+    votesAgainst: number;
+    endsAt: string;
+  }[];
 };
 
-export function listClips(params: ListClipsParams) {
-  return get<Paginated<Clip>>('/admin/clips', params);
-}
+export type Comment = {
+  id: string;
+  body: string;
+  status: string;
+  createdAt: string;
+  reportsCount: number;
+  user: PlayerSummary;
+  clip: { id: string; title: string; thumbnailUrl: string | null };
+};
 
-export function removeClip(id: string, reason: string) {
-  return post<{ ok: true }>(`/admin/clips/${id}/remove`, { reason });
-}
+export const clipsApi = {
+  list: (params: object) => get<Paginated<Clip>>('/admin/clips', params),
+  get: (id: string) => get<ClipDetail>(`/admin/clips/${id}`),
+  update: (id: string, input: { title?: string; description?: string | null; gameId?: string }) => patch<ClipDetail>(`/admin/clips/${id}`, input),
+  remove: (id: string, reason: string) => post(`/admin/clips/${id}/remove`, { reason }),
+  restore: (id: string) => post<ClipDetail>(`/admin/clips/${id}/restore`),
+  comments: (params: object) => get<Paginated<Comment>>('/admin/comments', params),
+  removeComment: (id: string) => post(`/admin/comments/${id}/remove`),
+  restoreComment: (id: string) => post(`/admin/comments/${id}/restore`),
+};

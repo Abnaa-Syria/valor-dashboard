@@ -1,17 +1,6 @@
 import { get, patch } from '../../lib/api';
 import type { Paginated } from '../../lib/types';
 
-export type ReportStatus = 'OPEN' | 'RESOLVED' | 'DISMISSED';
-export type ReportTarget = 'CLIP' | 'COMMENT' | 'USER';
-
-export const reportStatusMeta: Record<ReportStatus, { label: string; color: string }> = {
-  OPEN: { label: 'Open', color: 'orange' },
-  RESOLVED: { label: 'Resolved', color: 'green' },
-  DISMISSED: { label: 'Dismissed', color: 'default' },
-};
-
-export const targetLabels: Record<ReportTarget, string> = { CLIP: 'Clip', COMMENT: 'Comment', USER: 'Player' };
-
 type Owner = { id: string; username: string };
 
 export type ReportTargetDetails =
@@ -21,10 +10,10 @@ export type ReportTargetDetails =
 
 export type Report = {
   id: string;
-  targetType: ReportTarget;
+  targetType: 'CLIP' | 'COMMENT' | 'USER';
   targetId: string;
   reason: string;
-  status: ReportStatus;
+  status: string;
   createdAt: string;
   resolvedAt: string | null;
   resolutionNote: string | null;
@@ -33,17 +22,20 @@ export type Report = {
   target: ReportTargetDetails | null;
 };
 
-export type ListReportsParams = { page: number; pageSize: number; status?: ReportStatus; targetType?: ReportTarget };
-
-export const reportsKeys = {
-  all: ['reports'] as const,
-  list: (params: ListReportsParams) => ['reports', 'list', params] as const,
+export type ReportDetail = Report & {
+  related: (Omit<Report, 'target' | 'resolvedBy'> & { reporter: Owner })[];
 };
 
-export function listReports(params: ListReportsParams) {
-  return get<Paginated<Report>>('/admin/reports', params);
-}
+export const reportsApi = {
+  list: (params: object) => get<Paginated<Report>>('/admin/reports', params),
+  get: (id: string) => get<ReportDetail>(`/admin/reports/${id}`),
+  resolve: (id: string, input: { status: 'RESOLVED' | 'DISMISSED'; note?: string; removeContent?: boolean }) => patch<Report>(`/admin/reports/${id}`, input),
+};
 
-export function resolveReport(id: string, input: { status: 'RESOLVED' | 'DISMISSED'; note?: string; removeContent?: boolean }) {
-  return patch<Report>(`/admin/reports/${id}`, input);
+/** Where the reported thing lives in the dashboard. */
+export function targetLink(report: Pick<Report, 'targetType' | 'targetId' | 'target'>) {
+  if (report.targetType === 'CLIP') return `/clips/${report.targetId}`;
+  if (report.targetType === 'USER') return `/players/${report.targetId}`;
+  const target = report.target as { clipId?: string } | null;
+  return target?.clipId ? `/clips/${target.clipId}` : null;
 }

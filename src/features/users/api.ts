@@ -1,4 +1,4 @@
-import { get, patch, post } from '../../lib/api';
+import { del, get, patch, post } from '../../lib/api';
 import type { Paginated } from '../../lib/types';
 
 export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'BANNED' | 'DELETED';
@@ -23,6 +23,8 @@ export type UserListItem = {
 
 export type UserDetails = UserListItem & {
   referralCode: string;
+  hideReferralCount: boolean;
+  bannerUrl: string | null;
   updatedAt: string;
   balances: { type: 'VOTING' | 'CHALLENGE'; freeBalance: number; purchasedBalance: number }[];
   invitedVia: { inviter: { id: string; username: string }; createdAt: string } | null;
@@ -83,3 +85,33 @@ export function getUser(id: string) {
 export function updateUserStatus(id: string, status: UserStatus) {
   return patch<UserListItem>(`/admin/users/${id}/status`, { status });
 }
+
+// ───────────── Full player management ─────────────
+
+export type PlayerInput = { username: string; email: string; password?: string; hideReferralCount?: boolean; avatarUrl?: string | null; bannerUrl?: string | null };
+
+export type GiftRow = {
+  id: string;
+  quantity: number;
+  popularityAwarded: number;
+  awardedAt: string | null;
+  battleId: string | null;
+  createdAt: string;
+  gift: { name: string; tier: string; iconUrl: string | null };
+  sender: { id: string; username: string };
+  recipient: { id: string; username: string };
+};
+
+type PlayerSummary = { id: string; username: string; avatarUrl: string | null };
+
+export const playersApi = {
+  create: (input: PlayerInput) => post<{ id: string; username: string }>('/admin/users', input),
+  update: (id: string, input: Partial<PlayerInput>) => patch<{ id: string; username: string }>(`/admin/users/${id}`, input),
+  setPassword: (id: string, password: string) => post(`/admin/users/${id}/password`, { password }),
+  sendReset: (id: string) => post(`/admin/users/${id}/password-reset`),
+  remove: (id: string, reason: string) => del(`/admin/users/${id}`, { reason }),
+  export: (id: string) => get<unknown>(`/admin/users/${id}/export`),
+  gifts: (id: string, params: object) => get<Paginated<GiftRow>>(`/admin/users/${id}/gifts`, params),
+  blocks: (id: string) =>
+    get<{ blocked: { at: string; player: PlayerSummary }[]; blockedBy: { at: string; player: PlayerSummary }[] }>(`/admin/users/${id}/blocks`),
+};
