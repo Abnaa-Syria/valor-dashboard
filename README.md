@@ -12,6 +12,8 @@ npm run dev        # http://localhost:5173
 The backend must be running on `http://localhost:4000`. In development, Vite forwards `/api` to it, so nothing else is needed.
 For production, copy `.env.example` to `.env` and set `VITE_API_URL`, then `npm run build` (output in `dist/`).
 
+**Vercel:** import the repo (framework Vite, settings in `vercel.json`) and add the environment variable `VITE_API_URL=https://api.<your-domain>/api`. `vercel.json` sends every path to `index.html`, so links like `/players/123` open directly. Add the Vercel address to the API's `CORS_ORIGINS`.
+
 Log in with the super admin created by `npm run db:seed` in the backend.
 
 ## Structure
