@@ -57,7 +57,7 @@ export function BattlesTable({ params, setParams, fixed = {} }: Props) {
           <Typography.Text>
             {b.votesA} – {b.votesB}
           </Typography.Text>
-          <Progress percent={b.totalVotes ? b.percentA : 0} showInfo={false} size="small" strokeColor="#9085e9" />
+          <Progress percent={b.totalVotes ? b.percentA : 0} showInfo={false} size="small" strokeColor="var(--v-chart-ink)" />
         </Flex>
       ),
     },

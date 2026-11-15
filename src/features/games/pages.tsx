@@ -25,7 +25,7 @@ const TagList = ({ values }: { values: string[] }) =>
   values.length === 0 ? <Typography.Text type="secondary">—</Typography.Text> : <Flex gap={4} wrap>{values.map((v) => <Tag key={v}>{v}</Tag>)}</Flex>;
 
 const GameIcon = ({ url, size = 32 }: { url: string | null; size?: number }) =>
-  url ? <img src={url} alt="" style={{ width: size, height: size, borderRadius: 8, objectFit: 'cover' }} /> : <div style={{ width: size, height: size, borderRadius: 8, background: '#1b1729' }} />;
+  url ? <img src={url} alt="" style={{ width: size, height: size, borderRadius: 8, objectFit: 'cover' }} /> : <div style={{ width: size, height: size, borderRadius: 8, background: 'var(--v-placeholder)' }} />;
 
 export function GamesListPage() {
   const navigate = useNavigate();

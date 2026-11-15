@@ -18,7 +18,7 @@ function useCanEdit() {
 }
 
 const BadgeIcon = ({ url, size = 36 }: { url: string | null; size?: number }) =>
-  url ? <img src={url} alt="" style={{ width: size, height: size, objectFit: 'contain' }} /> : <div style={{ width: size, height: size, borderRadius: size / 2, background: '#1b1729' }} />;
+  url ? <img src={url} alt="" style={{ width: size, height: size, objectFit: 'contain' }} /> : <div style={{ width: size, height: size, borderRadius: size / 2, background: 'var(--v-placeholder)' }} />;
 
 export function BadgesListPage() {
   const navigate = useNavigate();

@@ -6,6 +6,7 @@ import { ArrowRightOutlined, LockOutlined, MailOutlined } from '@ant-design/icon
 import { getErrorCode, getErrorMessage } from '../../lib/api';
 import { getToken, setToken } from '../../lib/auth-storage';
 import { login, meQueryKey } from './api';
+import { ThemeSwitch } from '../../components/ThemeSwitch';
 
 type LoginValues = { email: string; password: string };
 
@@ -37,6 +38,7 @@ export function LoginPage() {
 
   return (
     <div className="v-login">
+      <ThemeSwitch className="v-login-theme" />
       <section className="v-login-art" aria-hidden>
         <span className="v-orb" style={{ width: 320, height: 320, background: '#7c3aed', top: '8%', left: '12%' }} />
         <span className="v-orb" style={{ width: 260, height: 260, background: '#d946ef', bottom: '10%', right: '8%', animationDelay: '-6s' }} />

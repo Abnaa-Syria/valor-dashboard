@@ -339,7 +339,7 @@ export function ThemesListPage() {
                     <div style={{ background: String(tokens.bg), borderRadius: 12, padding: 12, border: `1px solid ${String(tokens['border-subtle'])}` }}>
                       <Flex gap={6}>
                         {['bg', 'surface', 'surface-raised', 'accent', 'accent-secondary', 'text-primary'].map((key) => (
-                          <div key={key} title={key} style={{ width: 24, height: 24, borderRadius: 12, background: String(tokens[key]), border: '1px solid #ffffff22' }} />
+                          <div key={key} title={key} style={{ width: 24, height: 24, borderRadius: 12, background: String(tokens[key]), border: '1px solid var(--v-swatch-border)' }} />
                         ))}
                       </Flex>
                       <div style={{ marginTop: 10, padding: '6px 0', textAlign: 'center', fontSize: 12, fontWeight: 600, borderRadius: Number(tokens['radius-control']), background: String(tokens.accent), color: String(tokens['on-accent']) }}>

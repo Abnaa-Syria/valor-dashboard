@@ -35,6 +35,7 @@ import { get } from '../lib/api';
 import { roleLabels, type AdminRole } from '../lib/types';
 import { useCurrentAdmin } from '../features/auth/api';
 import { ChangePasswordModal } from '../features/auth/ChangePasswordModal';
+import { ThemeSwitch } from '../components/ThemeSwitch';
 
 type NavItem = { key: string; icon: ReactNode; label: string; roles?: AdminRole[] };
 type NavGroup = { label: string; items: NavItem[] };
@@ -154,7 +155,7 @@ export function AdminLayout() {
               </button>
               <div className="v-header-title" style={{ lineHeight: 1.25, minWidth: 0 }}>
                 <div className="v-eyebrow" style={{ fontSize: 10 }}>{currentGroup?.label ?? 'Community'}</div>
-                <div style={{ fontFamily: 'var(--v-display)', fontWeight: 600, fontSize: 15, color: '#fff' }}>{current?.label ?? 'Overview'}</div>
+                <div style={{ fontFamily: 'var(--v-display)', fontWeight: 600, fontSize: 15, color: 'var(--v-heading)' }}>{current?.label ?? 'Overview'}</div>
               </div>
             </Flex>
             <Flex align="center" gap={10}>
@@ -164,6 +165,7 @@ export function AdminLayout() {
                   {stats.battles.active} live {stats.battles.active === 1 ? 'battle' : 'battles'}
                 </Link>
               )}
+              <ThemeSwitch />
               <Link to="/reports" className="v-icon-btn" aria-label={`Open reports: ${openReports}`} title="Open reports">
                 <Badge count={openReports} size="small" offset={[4, -4]}>
                   <BellOutlined style={{ fontSize: 16, color: 'inherit' }} />
@@ -173,7 +175,7 @@ export function AdminLayout() {
                 <div className="v-account" role="button" tabIndex={0}>
                   <div className="v-avatar-ring"><div>{initials}</div></div>
                   <div style={{ lineHeight: 1.2 }} className="v-account-text">
-                    <div style={{ fontWeight: 600, fontSize: 13, color: '#fff' }}>{admin?.name}</div>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--v-heading)' }}>{admin?.name}</div>
                     {admin && <div style={{ fontSize: 11, color: 'var(--v-violet)' }}>{roleLabels[admin.role]}</div>}
                   </div>
                   <DownOutlined style={{ fontSize: 10, color: 'var(--v-muted)' }} />

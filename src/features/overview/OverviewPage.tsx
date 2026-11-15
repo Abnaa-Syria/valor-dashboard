@@ -23,6 +23,8 @@ import { get } from '../../lib/api';
 import { formatNumber } from '../../lib/format';
 import { PageState } from '../../components/common';
 import { useCurrentAdmin } from '../auth/api';
+import { chartColors } from '../../theme';
+import { useThemeMode } from '../../theme-mode';
 
 type Overview = {
   users: { total: number; new24h: number };
@@ -36,9 +38,6 @@ type Overview = {
 
 type Day = { date: string; newPlayers: number; clips: number; battlesCompleted: number; votes: number; revenueSar: number };
 
-const ink = '#9085e9';
-const gridColor = 'rgba(167,139,250,0.08)';
-const axisColor = 'rgba(214,208,240,0.45)';
 const shortDate = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 // Icon chip colors only (identity of each tile); numbers stay in text colors.
@@ -69,6 +68,8 @@ function KpiCard({ kpi, loading }: { kpi: Kpi; loading: boolean }) {
 
 function ChartCard({ title, data, field, kind, money }: { title: string; data: Day[]; field: keyof Day; kind: 'area' | 'bar'; money?: boolean }) {
   const gradientId = useId().replace(/:/g, '');
+  const { mode } = useThemeMode();
+  const { ink, grid: gridColor, axis: axisColor, cursorFill, cursorStroke, dotRing } = chartColors(mode);
   const total = data.reduce((sum, d) => sum + Number(d[field]), 0);
   const fmt = (v: number) => (money ? `SAR ${v.toFixed(2)}` : formatNumber(v));
   const common = { data, margin: { top: 8, right: 8, bottom: 0, left: -12 } };
@@ -84,22 +85,22 @@ function ChartCard({ title, data, field, kind, money }: { title: string; data: D
       <XAxis dataKey="date" tickFormatter={shortDate} tick={{ fill: axisColor, fontSize: 11 }} axisLine={false} tickLine={false} minTickGap={24} />
       <YAxis allowDecimals={!!money} tick={{ fill: axisColor, fontSize: 11 }} axisLine={false} tickLine={false} width={48} />
       <Tooltip
-        cursor={kind === 'bar' ? { fill: 'rgba(167,139,250,0.06)' } : { stroke: 'rgba(196,181,253,0.4)' }}
-        contentStyle={{ background: '#1c1829', border: '1px solid rgba(167,139,250,0.3)', borderRadius: 12, boxShadow: '0 16px 40px -12px rgba(0,0,0,0.8)' }}
-        labelStyle={{ color: '#a39dbb' }}
-        itemStyle={{ color: '#f4f1ff' }}
+        cursor={kind === 'bar' ? { fill: cursorFill } : { stroke: cursorStroke }}
+        contentStyle={{ background: 'var(--v-tooltip-bg)', border: '1px solid var(--v-line-strong)', borderRadius: 12, boxShadow: 'var(--v-tooltip-shadow)' }}
+        labelStyle={{ color: 'var(--v-muted)' }}
+        itemStyle={{ color: 'var(--v-text)' }}
         labelFormatter={(d) => shortDate(String(d))}
         formatter={(v) => [fmt(Number(v)), title]}
       />
     </>
   );
   return (
-    <Card size="small" title={title} extra={<span style={{ fontFamily: 'var(--v-display)', fontWeight: 700, fontSize: 16, color: '#fff' }}>{fmt(total)}</span>}>
+    <Card size="small" title={title} extra={<span style={{ fontFamily: 'var(--v-display)', fontWeight: 700, fontSize: 16, color: 'var(--v-heading)' }}>{fmt(total)}</span>}>
       <ResponsiveContainer width="100%" height={210}>
         {kind === 'area' ? (
           <AreaChart {...common}>
             {axes}
-            <Area type="monotone" dataKey={field} stroke={ink} strokeWidth={2} fill={`url(#${gradientId})`} activeDot={{ r: 5, stroke: '#15121f', strokeWidth: 2 }} />
+            <Area type="monotone" dataKey={field} stroke={ink} strokeWidth={2} fill={`url(#${gradientId})`} activeDot={{ r: 5, stroke: dotRing, strokeWidth: 2 }} />
           </AreaChart>
         ) : (
           <BarChart {...common}>

@@ -192,7 +192,7 @@ export function BattleDetailPage() {
             )}
           </Descriptions.Item>
         </Descriptions>
-        <Progress percent={battle.totalVotes ? battle.percentA : 0} showInfo={false} strokeColor="#9085e9" style={{ marginTop: 8 }} />
+        <Progress percent={battle.totalVotes ? battle.percentA : 0} showInfo={false} strokeColor="var(--v-chart-ink)" style={{ marginTop: 8 }} />
       </Card>
 
       <Row gutter={16}>

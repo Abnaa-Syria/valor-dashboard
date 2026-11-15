@@ -12,11 +12,103 @@
   --v-magenta: #d946ef;
   --v-coral: #fb7185;
   --v-text: #f4f1ff;
+  --v-heading: #ffffff;
   --v-muted: #a39dbb;
   --v-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --v-glass: linear-gradient(180deg, rgba(34, 27, 56, 0.66) 0%, rgba(18, 15, 29, 0.72) 100%);
   --v-brand-gradient: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 45%, #c026d3 100%);
   --v-logo-gradient: linear-gradient(100deg, #8b5cf6 0%, #d946ef 55%, #fb7185 100%);
+  --v-soft-fill: rgba(255, 255, 255, 0.03);
+  --v-hover-fill: rgba(139, 92, 246, 0.12);
+  --v-hover-text: #ffffff;
+  --v-header-bg: rgba(11, 10, 18, 0.62);
+  --v-card-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  --v-card-shadow-hover: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 20px 44px -20px rgba(124, 58, 237, 0.55);
+  --v-haze:
+    radial-gradient(900px 520px at 12% -8%, rgba(124, 58, 237, 0.28), transparent 62%),
+    radial-gradient(700px 480px at 100% 0%, rgba(217, 70, 239, 0.14), transparent 60%),
+    radial-gradient(800px 600px at 70% 110%, rgba(91, 33, 182, 0.18), transparent 60%);
+  --v-grid-line: rgba(167, 139, 250, 0.045);
+  --v-avatar-bg: #1c1829;
+  --v-live-text: #6ee7b7;
+  --v-hero-bg:
+    radial-gradient(600px 300px at 85% 30%, rgba(217, 70, 239, 0.32), transparent 65%),
+    radial-gradient(500px 280px at 0% 100%, rgba(124, 58, 237, 0.4), transparent 60%),
+    linear-gradient(135deg, #1d1534 0%, #120e20 60%, #160f26 100%);
+  --v-hero-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 30px 60px -30px rgba(124, 58, 237, 0.6);
+  --v-hero-grid: rgba(196, 181, 253, 0.06);
+  --v-hero-text: #c9c3df;
+  --v-kpi-arrow: #6f6889;
+  --v-placeholder: #1b1729;
+  --v-checker-a: #1c1829;
+  --v-checker-b: #262138;
+  --v-tooltip-bg: #1c1829;
+  --v-tooltip-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.8);
+  --v-swatch-border: rgba(255, 255, 255, 0.13);
+  --v-chart-ink: #9085e9;
+  --v-selection: rgba(139, 92, 246, 0.45);
+  --v-scrollbar: rgba(167, 139, 250, 0.28);
+  --v-login-card-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(124, 58, 237, 0.7);
+}
+
+/* Light mode: same violet brand on bright surfaces. */
+:root[data-theme='light'] {
+  --v-base: #f5f3fb;
+  --v-surface: #ffffff;
+  --v-raised: #ffffff;
+  --v-line: rgba(124, 58, 237, 0.13);
+  --v-line-strong: rgba(124, 58, 237, 0.3);
+  --v-violet: #7c3aed;
+  --v-light: #6d28d9;
+  --v-text: #17122b;
+  --v-heading: #17122b;
+  --v-muted: #5e5878;
+  --v-glass: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(251, 249, 255, 0.9) 100%);
+  --v-soft-fill: rgba(124, 58, 237, 0.04);
+  --v-hover-fill: rgba(124, 58, 237, 0.08);
+  --v-hover-text: #6d28d9;
+  --v-header-bg: rgba(245, 243, 251, 0.8);
+  --v-card-shadow: 0 1px 2px rgba(23, 18, 43, 0.04), 0 12px 32px -20px rgba(46, 16, 101, 0.2);
+  --v-card-shadow-hover: 0 1px 2px rgba(23, 18, 43, 0.04), 0 20px 40px -18px rgba(124, 58, 237, 0.32);
+  --v-haze:
+    radial-gradient(900px 520px at 12% -8%, rgba(124, 58, 237, 0.11), transparent 62%),
+    radial-gradient(700px 480px at 100% 0%, rgba(217, 70, 239, 0.07), transparent 60%),
+    radial-gradient(800px 600px at 70% 110%, rgba(91, 33, 182, 0.06), transparent 60%);
+  --v-grid-line: rgba(124, 58, 237, 0.05);
+  --v-avatar-bg: #ffffff;
+  --v-live-text: #047857;
+  --v-hero-bg:
+    radial-gradient(600px 300px at 85% 30%, rgba(217, 70, 239, 0.16), transparent 65%),
+    radial-gradient(500px 280px at 0% 100%, rgba(124, 58, 237, 0.16), transparent 60%),
+    linear-gradient(135deg, #ffffff 0%, #f7f3ff 60%, #fbf2ff 100%);
+  --v-hero-shadow: 0 1px 2px rgba(23, 18, 43, 0.04), 0 24px 50px -30px rgba(124, 58, 237, 0.35);
+  --v-hero-grid: rgba(124, 58, 237, 0.06);
+  --v-hero-text: #4b4566;
+  --v-kpi-arrow: #a8a2bf;
+  --v-placeholder: #ece8f6;
+  --v-checker-a: #f3f0fa;
+  --v-checker-b: #e4ddf2;
+  --v-tooltip-bg: #ffffff;
+  --v-tooltip-shadow: 0 16px 40px -14px rgba(46, 16, 101, 0.28);
+  --v-swatch-border: rgba(23, 18, 43, 0.16);
+  --v-chart-ink: #7c3aed;
+  --v-selection: rgba(124, 58, 237, 0.2);
+  --v-scrollbar: rgba(124, 58, 237, 0.25);
+  --v-login-card-shadow: 0 1px 2px rgba(23, 18, 43, 0.04), 0 40px 80px -40px rgba(124, 58, 237, 0.35);
+}
+
+/* Dark brand panels stay dark in both modes: the sidebar and the login art carry the official
+   logo, whose light lettering is drawn for a dark background. */
+.v-sider,
+.v-login-art {
+  --v-line: rgba(167, 139, 250, 0.14);
+  --v-line-strong: rgba(167, 139, 250, 0.32);
+  --v-violet: #a78bfa;
+  --v-light: #c4b5fd;
+  --v-text: #f4f1ff;
+  --v-heading: #ffffff;
+  --v-muted: #a39dbb;
+  --v-glass: linear-gradient(180deg, rgba(34, 27, 56, 0.66) 0%, rgba(18, 15, 29, 0.72) 100%);
 }
 
 html,
@@ -39,10 +131,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    radial-gradient(900px 520px at 12% -8%, rgba(124, 58, 237, 0.28), transparent 62%),
-    radial-gradient(700px 480px at 100% 0%, rgba(217, 70, 239, 0.14), transparent 60%),
-    radial-gradient(800px 600px at 70% 110%, rgba(91, 33, 182, 0.18), transparent 60%);
+  background: var(--v-haze);
 }
 
 body::after {
@@ -52,8 +141,8 @@ body::after {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(167, 139, 250, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(167, 139, 250, 0.045) 1px, transparent 1px);
+    linear-gradient(var(--v-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--v-grid-line) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
 }
@@ -64,12 +153,12 @@ body::after {
 }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.45);
+  background: var(--v-selection);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(167, 139, 250, 0.28) transparent;
+  scrollbar-color: var(--v-scrollbar) transparent;
 }
 
 h1,
@@ -179,7 +268,7 @@ h5,
   top: 0;
   z-index: 20;
   padding-inline: 28px !important;
-  background: rgba(11, 10, 18, 0.62) !important;
+  background: var(--v-header-bg) !important;
   backdrop-filter: blur(18px) saturate(140%);
   border-bottom: 1px solid var(--v-line);
 }
@@ -200,7 +289,7 @@ h5,
   border-radius: 999px;
   border: 1px solid rgba(52, 211, 153, 0.28);
   background: rgba(52, 211, 153, 0.08);
-  color: #6ee7b7;
+  color: var(--v-live-text);
   font-size: 12px;
   font-weight: 600;
 }
@@ -227,16 +316,16 @@ h5,
   place-items: center;
   border-radius: 12px;
   border: 1px solid var(--v-line);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--v-soft-fill);
   color: var(--v-muted);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .v-icon-btn:hover {
-  color: #fff;
+  color: var(--v-hover-text);
   border-color: var(--v-line-strong);
-  background: rgba(139, 92, 246, 0.12);
+  background: var(--v-hover-fill);
 }
 
 .v-account {
@@ -246,14 +335,14 @@ h5,
   padding: 4px 10px 4px 4px;
   border-radius: 999px;
   border: 1px solid var(--v-line);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--v-soft-fill);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .v-account:hover {
   border-color: var(--v-line-strong);
-  background: rgba(139, 92, 246, 0.1);
+  background: var(--v-hover-fill);
 }
 
 .v-avatar-ring {
@@ -269,11 +358,11 @@ h5,
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #1c1829;
+  background: var(--v-avatar-bg);
   font-family: var(--v-display);
   font-weight: 700;
   font-size: 13px;
-  color: #fff;
+  color: var(--v-heading);
 }
 
 /* ───────── Page header ───────── */
@@ -289,7 +378,7 @@ h5,
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 0;
-  color: #fff;
+  color: var(--v-heading);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -317,7 +406,7 @@ h5,
   place-items: center;
   border-radius: 12px;
   border: 1px solid var(--v-line);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--v-soft-fill);
   color: var(--v-text);
   cursor: pointer;
   flex-shrink: 0;
@@ -326,7 +415,7 @@ h5,
 
 .v-back:hover {
   border-color: var(--v-line-strong);
-  background: rgba(139, 92, 246, 0.14);
+  background: var(--v-hover-fill);
 }
 
 /* ───────── Glass surfaces ───────── */
@@ -334,13 +423,13 @@ h5,
 .ant-card {
   background: var(--v-glass) !important;
   border: 1px solid var(--v-line) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  box-shadow: var(--v-card-shadow);
   backdrop-filter: blur(14px);
 }
 
 .ant-card-hoverable:hover {
   border-color: var(--v-line-strong) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 20px 44px -20px rgba(124, 58, 237, 0.55) !important;
+  box-shadow: var(--v-card-shadow-hover) !important;
   transform: translateY(-2px);
 }
 
@@ -421,7 +510,7 @@ h5,
 }
 
 .ant-btn-default:not(:disabled):hover {
-  background: rgba(139, 92, 246, 0.12) !important;
+  background: var(--v-hover-fill) !important;
 }
 
 .ant-tag {
@@ -490,11 +579,8 @@ h5,
   border: 1px solid var(--v-line-strong);
   padding: 32px 36px;
   margin-bottom: 24px;
-  background:
-    radial-gradient(600px 300px at 85% 30%, rgba(217, 70, 239, 0.32), transparent 65%),
-    radial-gradient(500px 280px at 0% 100%, rgba(124, 58, 237, 0.4), transparent 60%),
-    linear-gradient(135deg, #1d1534 0%, #120e20 60%, #160f26 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 30px 60px -30px rgba(124, 58, 237, 0.6);
+  background: var(--v-hero-bg);
+  box-shadow: var(--v-hero-shadow);
 }
 
 .v-hero::after {
@@ -502,8 +588,8 @@ h5,
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(196, 181, 253, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(196, 181, 253, 0.06) 1px, transparent 1px);
+    linear-gradient(var(--v-hero-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--v-hero-grid) 1px, transparent 1px);
   background-size: 32px 32px;
   mask-image: linear-gradient(90deg, transparent 30%, #000 100%);
   pointer-events: none;
@@ -531,7 +617,7 @@ h5,
   font-size: 38px;
   line-height: 1.1;
   margin: 10px 0 10px;
-  color: #fff;
+  color: var(--v-heading);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
@@ -544,7 +630,7 @@ h5,
 }
 
 .v-hero p {
-  color: #c9c3df;
+  color: var(--v-hero-text);
   font-size: 15px;
   margin: 0 0 22px;
 }
@@ -603,7 +689,7 @@ a.v-kpi:hover {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--v-heading);
   line-height: 1.2;
 }
 
@@ -611,7 +697,7 @@ a.v-kpi:hover {
   position: absolute;
   inset-inline-end: 18px;
   bottom: 18px;
-  color: #6f6889;
+  color: var(--v-kpi-arrow);
   transition: color 0.2s, transform 0.2s;
 }
 
@@ -625,7 +711,7 @@ a.v-kpi:hover .v-kpi-arrow {
   font-size: 18px;
   font-weight: 700;
   margin: 0;
-  color: #fff;
+  color: var(--v-heading);
 }
 
 /* ───────── Login ───────── */
@@ -689,7 +775,7 @@ a.v-kpi:hover .v-kpi-arrow {
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--v-heading);
 }
 
 .v-login-tag span {
@@ -732,13 +818,13 @@ a.v-kpi:hover .v-kpi-arrow {
   border: 1px solid var(--v-line-strong);
   background: var(--v-glass);
   backdrop-filter: blur(20px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 40px 80px -40px rgba(124, 58, 237, 0.7);
+  box-shadow: var(--v-login-card-shadow);
 }
 
 .v-login-card h2 {
   font-size: 28px;
   margin: 10px 0 6px;
-  color: #fff;
+  color: var(--v-heading);
 }
 
 @media (max-width: 960px) {
@@ -780,4 +866,17 @@ a.v-kpi:hover .v-kpi-arrow {
   .v-page-title {
     font-size: 24px;
   }
+}
+
+/* ───────── Theme switch ───────── */
+
+.v-theme-switch {
+  font-size: 16px;
+}
+
+.v-login-theme {
+  position: fixed;
+  top: 18px;
+  inset-inline-end: 18px;
+  z-index: 5;
 }

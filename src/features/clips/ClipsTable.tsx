@@ -22,7 +22,7 @@ export function ClipThumb({ url, width = 88 }: { url: string | null; width?: num
         flexShrink: 0,
         display: 'grid',
         placeItems: 'center',
-        background: url ? `center / cover url("${url}")` : '#1b1729',
+        background: url ? `center / cover url("${url}")` : 'var(--v-placeholder)',
       }}
     >
       <PlayCircleOutlined style={{ fontSize: 18, color: '#fff' }} />
