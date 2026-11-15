@@ -880,3 +880,72 @@ a.v-kpi:hover .v-kpi-arrow {
   inset-inline-end: 18px;
   z-index: 5;
 }
+
+/* ───────── Manual match: opponent picker ───────── */
+
+.v-pick {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px 8px 8px;
+  border-radius: 14px;
+  border: 1px solid var(--v-line);
+  background: var(--v-soft-fill);
+  color: var(--v-text);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.v-pick:hover {
+  border-color: var(--v-line-strong);
+  background: var(--v-hover-fill);
+}
+
+.v-pick-selected,
+.v-pick-selected:hover {
+  border-color: var(--v-primary);
+  background: var(--v-hover-fill);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+.v-pick-thumb {
+  width: 72px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--v-placeholder) center / cover no-repeat;
+  color: #fff;
+  font-size: 18px;
+}
+
+.v-pick-title {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v-pick-meta {
+  font-size: 12px;
+  color: var(--v-muted);
+}
+
+/* Pinned table columns: opaque like the panel underneath (the panel itself is translucent). */
+.ant-table-wrapper .ant-table-tbody > tr > td.ant-table-cell-fix-right,
+.ant-table-wrapper .ant-table-tbody > tr > td.ant-table-cell-fix-left {
+  background: var(--v-surface);
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th.ant-table-cell-fix-right,
+.ant-table-wrapper .ant-table-thead > tr > th.ant-table-cell-fix-left {
+  background: linear-gradient(rgba(124, 58, 237, 0.06), rgba(124, 58, 237, 0.06)), var(--v-surface);
+}
+
+.ant-table-wrapper .ant-table-tbody > tr:hover > td.ant-table-cell-fix-right,
+.ant-table-wrapper .ant-table-tbody > tr:hover > td.ant-table-cell-fix-left {
+  background: linear-gradient(var(--v-hover-fill), var(--v-hover-fill)), var(--v-surface);
+}

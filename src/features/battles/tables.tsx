@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert, App, Flex, Input, Progress, Select, Table, Tag, Typography, type TableProps } from 'antd';
@@ -10,6 +11,7 @@ import { PlayerLink } from '../../components/common';
 import { RemoveWithReason } from '../../components/RemoveWithReason';
 import { useGameOptions } from '../games/api';
 import { battlesApi, type Battle, type Entry, type Rematch } from './api';
+import { MatchEntryButton, MatchEntryModal } from './MatchEntryModal';
 
 type Props = { params: ListParams; setParams: SetParams; fixed?: { userId?: string; gameId?: string } };
 
@@ -89,6 +91,7 @@ export function EntriesTable({ params, setParams, fixed = {} }: Props) {
   const { message } = App.useApp();
   const queryClient = useQueryClient();
   const gameOptions = useGameOptions();
+  const [matching, setMatching] = useState<Entry | null>(null);
   const query = clean({ ...params, ...fixed });
   const { data, isFetching, isError, error } = useQuery({
     queryKey: ['entries', 'list', query],
@@ -123,9 +126,13 @@ export function EntriesTable({ params, setParams, fixed = {} }: Props) {
     {
       title: '',
       key: 'actions',
+      // Pinned so the actions stay visible when the table scrolls sideways.
+      fixed: 'right',
       render: (_, e) =>
         e.status === 'QUEUED' && (
-          <RemoveWithReason
+          <Flex gap={8} justify="flex-end" wrap={false}>
+            <MatchEntryButton onClick={() => setMatching(e)} />
+            <RemoveWithReason
             title="Cancel this entry?"
             description="The player gets their Challenge Credit back and a notification."
             buttonLabel="Cancel"
@@ -133,6 +140,7 @@ export function EntriesTable({ params, setParams, fixed = {} }: Props) {
             buttonProps={{ size: 'small' }}
             onConfirm={(reason) => cancel(e, reason)}
           />
+          </Flex>
         ),
     },
   ];
@@ -154,6 +162,7 @@ export function EntriesTable({ params, setParams, fixed = {} }: Props) {
         locale={{ emptyText: 'No battle entries' }}
         pagination={pagination(params, setParams, data?.meta.total, 'entries')}
       />
+      <MatchEntryModal entry={matching} onClose={() => setMatching(null)} />
     </>
   );
 }

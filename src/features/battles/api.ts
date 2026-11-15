@@ -72,6 +72,18 @@ export type Rematch = {
   originalBattle: { game: { name: string } };
 };
 
+/** A clip the admin can put against a waiting entry. */
+export type MatchCandidate = {
+  id: string;
+  title: string;
+  thumbnailUrl: string | null;
+  durationSec: number | null;
+  createdAt: string;
+  user: PlayerSummary;
+  /** Set when this clip is itself waiting for an opponent. */
+  waitingEntry: { id: string; weaponClass: string; rank: string } | null;
+};
+
 export const battlesApi = {
   list: (params: object) => get<Paginated<Battle>>('/admin/battles', params),
   get: (id: string) => get<BattleDetail>(`/admin/battles/${id}`),
@@ -80,6 +92,8 @@ export const battlesApi = {
   extend: (id: string, hours: number) => post<BattleDetail>(`/admin/battles/${id}/extend`, { hours }),
   entries: (params: object) => get<Paginated<Entry>>('/admin/entries', params),
   cancelEntry: (id: string, reason: string) => post(`/admin/entries/${id}/cancel`, { reason }),
+  matchCandidates: (id: string, q?: string) => get<MatchCandidate[]>(`/admin/entries/${id}/candidates`, q ? { q } : undefined),
+  matchEntry: (id: string, clipId: string) => post<{ battleId: string; matchedWaitingEntry: boolean }>(`/admin/entries/${id}/match`, { clipId }),
   rematches: (params: object) => get<Paginated<Rematch>>('/admin/rematches', params),
   cancelRematch: (id: string, reason: string) => post(`/admin/rematches/${id}/cancel`, { reason }),
 };
